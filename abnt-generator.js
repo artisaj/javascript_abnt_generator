@@ -151,12 +151,14 @@ if (siglasParas.length) {
     });
 }
 
-// Conteúdo principal (Introdução + demais tópicos)
+// >>> ADICIONE A PARTIR DAQUI <<<
+// Geração das seções de conteúdo (Introdução em diante)
 const { secoes: secoesConteudo } = gerarSecoesConteudo(path.join('estrutura', 'conteudo'));
+
+// Seção de conteúdo principal (Introdução em diante)
 if (secoesConteudo.length) {
     sections.push({
         ...commonSectionProps,
-        // Inicia numeração de páginas aqui
         properties: {
             ...commonSectionProps.properties,
             pageNumberStart: 1,
@@ -167,14 +169,20 @@ if (secoesConteudo.length) {
             default: new Header({
                 children: [
                     new Paragraph({
-                        children: [PageNumber.CURRENT],
+                        children: [
+                            new TextRun({
+                                children: [PageNumber.CURRENT], // wrap em TextRun
+                            }),
+                        ],
                         alignment: 'right',
+                        spacing: { after: 0 },
                     }),
                 ],
             }),
         },
     });
 }
+// >>> ATÉ AQUI <<<
 
 // Criação do documento
 const doc = new Document({
