@@ -6,6 +6,8 @@ import { criarContracapaABNT } from './builders/contracapa.js';
 import { criarAgradecimentosABNT } from './builders/agradecimentos.js';
 import { criarResumoABNT } from './builders/resumo.js';
 import { criarAbstractABNT } from './builders/abstract.js';
+import { criarListaIlustracoesABNT } from './builders/listaIlustracoes.js';
+import { criarListaSiglasAbreviaturasABNT } from './builders/siglas.js';
 
 // Caminho do arquivo de capa e contracapa
 const capaPath = path.join('estrutura', 'capa.json');
@@ -13,6 +15,8 @@ const contracapaPath = path.join('estrutura', 'contracapa.json');
 const agradecimentosPath = path.join('estrutura', 'agradecimentos.txt');
 const resumoPath = path.join('estrutura', 'resumo.json');
 const abstractPath = path.join('estrutura', 'abstract.json');
+const listaIlustracoesPath = path.join('estrutura', 'listaIlustracoes.json');
+const siglasPath = path.join('estrutura', 'siglas.json');
 const saidaDir = path.join('saidas');
 const versao = 'v1';
 const saidaDocx = path.join(saidaDir, `${versao}.docx`);
@@ -36,6 +40,19 @@ if (fs.existsSync(resumoPath)) {
 let abstractData = {};
 if (fs.existsSync(abstractPath)) {
     try { abstractData = JSON.parse(fs.readFileSync(abstractPath, 'utf8')); } catch { abstractData = {}; }
+}
+
+let listaIlustracoesData = {};
+if (fs.existsSync(listaIlustracoesPath)) {
+    try { listaIlustracoesData = JSON.parse(fs.readFileSync(listaIlustracoesPath, 'utf8')); } catch { listaIlustracoesData = {}; }
+}
+
+let siglasData = [];
+if (fs.existsSync(siglasPath)) {
+    try {
+		const raw = JSON.parse(fs.readFileSync(siglasPath, 'utf8'));
+        if (Array.isArray(raw)) siglasData = raw;
+    } catch { siglasData = []; }
 }
 
 // Propriedades comuns da seção
@@ -118,6 +135,26 @@ if (abstractParas.length) {
     sections.push({
         ...commonSectionProps,
         children: abstractParas,
+        footers: { default: new Footer({ children: [] }) },
+    });
+}
+
+// Lista de Ilustrações (condicional)
+const listaIlustracoesParas = criarListaIlustracoesABNT(listaIlustracoesData);
+if (listaIlustracoesParas.length) {
+    sections.push({
+        ...commonSectionProps,
+        children: listaIlustracoesParas,
+        footers: { default: new Footer({ children: [] }) },
+    });
+}
+
+// Lista de Abreviaturas e Siglas (condicional)
+const siglasParas = criarListaSiglasAbreviaturasABNT(siglasData);
+if (siglasParas.length) {
+    sections.push({
+        ...commonSectionProps,
+        children: siglasParas,
         footers: { default: new Footer({ children: [] }) },
     });
 }

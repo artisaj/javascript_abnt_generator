@@ -1,0 +1,22 @@
+[
+    {
+        "sigla": "Lorem",
+        "descricao": "Lorem Ipsum"
+    },
+    {
+        "sigla": "Ipsum",
+        "descricao": "Ipsum Dolor"
+    },
+    {
+        "sigla": "Dolor",
+        "descricao": "Dolor Sit"
+    },
+    {
+        "sigla": "Sit",
+        "descricao": "Sit Amet"
+    },
+    {
+        "sigla": "Amet",
+        "descricao": "Amet Lorem"
+    }
+]
