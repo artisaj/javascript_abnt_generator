@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Document, Packer, Paragraph, TextRun, Footer } from 'docx';
+import { Document, Packer, Paragraph, TextRun, Footer, Header, PageNumber } from 'docx';
 import { criarCapaABNT } from './builders/capa.js';
 import { criarContracapaABNT } from './builders/contracapa.js';
 import { criarAgradecimentosABNT } from './builders/agradecimentos.js';
@@ -8,6 +8,7 @@ import { criarResumoABNT } from './builders/resumo.js';
 import { criarAbstractABNT } from './builders/abstract.js';
 import { criarListaIlustracoesABNT } from './builders/listaIlustracoes.js';
 import { criarListaSiglasAbreviaturasABNT } from './builders/siglas.js';
+import { gerarSecoesConteudo } from './builders/conteudo.js';
 
 // Caminho do arquivo de capa e contracapa
 const capaPath = path.join('estrutura', 'capa.json');
@@ -55,23 +56,14 @@ if (fs.existsSync(siglasPath)) {
     } catch { siglasData = []; }
 }
 
-// Propriedades comuns da seção
+// Propriedades comuns de página ABNT
 const commonSectionProps = {
-	properties: {
-		page: {
-			margin: {
-				top: 1700, // 3cm
-				right: 1134, // 2cm
-				bottom: 1134, // 2cm
-				left: 1700, // 3cm
-			},
-			size: {
-				orientation: 'portrait',
-				width: 11906, // A4 width in twips
-				height: 16838, // A4 height in twips
-			},
-		},
-	},
+    properties: {
+        page: {
+            margin: { top: 1700, right: 1134, bottom: 1134, left: 1700 },
+            size: { orientation: 'portrait', width: 11906, height: 16838 },
+        },
+    },
 };
 
 // Monta seções dinamicamente
@@ -159,14 +151,94 @@ if (siglasParas.length) {
     });
 }
 
+// Conteúdo principal (Introdução + demais tópicos)
+const { secoes: secoesConteudo } = gerarSecoesConteudo(path.join('estrutura', 'conteudo'));
+if (secoesConteudo.length) {
+    sections.push({
+        ...commonSectionProps,
+        // Inicia numeração de páginas aqui
+        properties: {
+            ...commonSectionProps.properties,
+            pageNumberStart: 1,
+        },
+        children: secoesConteudo,
+        footers: { default: new Footer({ children: [] }) },
+        headers: {
+            default: new Header({
+                children: [
+                    new Paragraph({
+                        children: [PageNumber.CURRENT],
+                        alignment: 'right',
+                    }),
+                ],
+            }),
+        },
+    });
+}
+
+// Criação do documento
 const doc = new Document({
     sections,
     styles: {
         default: {
-            document: {
-                run: { font: 'Times New Roman', size: 24, color: '000000' },
-            },
+            document: { run: { font: 'Times New Roman', size: 24, color: '000000' } },
         },
+        paragraphStyles: [
+            {
+                id: 'Heading1',
+                name: 'Heading 1',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 200, after: 0 } },
+            },
+            {
+                id: 'Heading2',
+                name: 'Heading 2',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 150, after: 0 } },
+            },
+            {
+                id: 'Heading3',
+                name: 'Heading 3',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 120, after: 0 } },
+            },
+            {
+                id: 'Heading4',
+                name: 'Heading 4',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 100, after: 0 } },
+            },
+            {
+                id: 'Heading5',
+                name: 'Heading 5',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 100, after: 0 } },
+            },
+            {
+                id: 'Heading6',
+                name: 'Heading 6',
+                basedOn: 'Normal',
+                next: 'Normal',
+                quickFormat: true,
+                run: { bold: true, size: 24 },
+                paragraph: { spacing: { before: 100, after: 0 } },
+            },
+        ],
     },
 });
 

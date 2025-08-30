@@ -1,15 +1,14 @@
 import { Paragraph, TextRun } from 'docx';
 
+const FIRST_LINE_INDENT = 709;
+
 export function criarAbstractABNT({ texto = '', palavrasChave = [], keywords = [] } = {}) {
-    // aceita palavrasChave ou keywords
     const lista = (Array.isArray(palavrasChave) && palavrasChave.length) ? palavrasChave : keywords;
     const pars = [];
     const body = (texto || '').trim();
     const hasKeywords = Array.isArray(lista) && lista.length > 0;
-
     if (!body && !hasKeywords) return pars;
 
-    // Título
     pars.push(
         new Paragraph({
             children: [new TextRun({ text: 'ABSTRACT', bold: true })],
@@ -18,7 +17,6 @@ export function criarAbstractABNT({ texto = '', palavrasChave = [], keywords = [
         })
     );
 
-    // Texto (parágrafos separados por linha em branco)
     if (body) {
         const blocos = body.split(/\r?\n\r?\n+/);
         for (const bloco of blocos) {
@@ -29,12 +27,12 @@ export function criarAbstractABNT({ texto = '', palavrasChave = [], keywords = [
                     children: [new TextRun({ text: linha })],
                     alignment: 'both',
                     spacing: { after: 200 },
+                    indent: { firstLine: FIRST_LINE_INDENT },
                 })
             );
         }
     }
 
-    // Espaço extra antes das keywords
     if (hasKeywords) {
         pars.push(new Paragraph({ children: [], spacing: { after: 200 } }));
         const joined = lista.map(k => k.trim()).filter(Boolean).join(', ');
