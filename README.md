@@ -1,0 +1,1 @@
+1. Preencher os arquivos json capa e contracapa
