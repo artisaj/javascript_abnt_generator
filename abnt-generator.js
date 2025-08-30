@@ -5,12 +5,14 @@ import { criarCapaABNT } from './builders/capa.js';
 import { criarContracapaABNT } from './builders/contracapa.js';
 import { criarAgradecimentosABNT } from './builders/agradecimentos.js';
 import { criarResumoABNT } from './builders/resumo.js';
+import { criarAbstractABNT } from './builders/abstract.js';
 
 // Caminho do arquivo de capa e contracapa
 const capaPath = path.join('estrutura', 'capa.json');
 const contracapaPath = path.join('estrutura', 'contracapa.json');
 const agradecimentosPath = path.join('estrutura', 'agradecimentos.txt');
 const resumoPath = path.join('estrutura', 'resumo.json');
+const abstractPath = path.join('estrutura', 'abstract.json');
 const saidaDir = path.join('saidas');
 const versao = 'v1';
 const saidaDocx = path.join(saidaDir, `${versao}.docx`);
@@ -29,6 +31,11 @@ if (fs.existsSync(resumoPath)) {
     try {
         resumoData = JSON.parse(fs.readFileSync(resumoPath, 'utf8'));
     } catch { resumoData = {}; }
+}
+
+let abstractData = {};
+if (fs.existsSync(abstractPath)) {
+    try { abstractData = JSON.parse(fs.readFileSync(abstractPath, 'utf8')); } catch { abstractData = {}; }
 }
 
 // Propriedades comuns da seção
@@ -102,6 +109,16 @@ if (resumoParas.length) {
         ...commonSectionProps,
         children: resumoParas,
         footers: { default: new Footer({ children: [] }) }, // footer vazio
+    });
+}
+
+// Abstract (condicional)
+const abstractParas = criarAbstractABNT(abstractData);
+if (abstractParas.length) {
+    sections.push({
+        ...commonSectionProps,
+        children: abstractParas,
+        footers: { default: new Footer({ children: [] }) },
     });
 }
 
