@@ -1,0 +1,9 @@
+{
+  "name": "abnt-generator",
+  "version": "1.0.0",
+  "main": "abnt-generator.js",
+  "type": "module",
+  "dependencies": {
+    "docx": "^8.5.0"
+  }
+}

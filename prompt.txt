@@ -1,0 +1,47 @@
+Este projeto será um gerador de documento para apresentação de trabalho de conclusão de curso (tcc) nas normas abnt.
+
+Um tcc possui os seguintes pontos obrigatórios:
+    capa, folha de rosto, agradecimentos, resumo, abstract, lista de ilustrações, LISTA DE ABREVIATURAS E SIGLAS, SUMÁRIO, Introdução, Desenvolvimento, Conclusão, Referências, Glossário, Anexo
+
+o objetivo do projeto é pegar informações e conteúdo que vão estar descritos em arquivos json ou txt, formatá-los no padrão abnt de cada tópico, e então exportar um DOCX.
+
+o arquivo abnt-generator na pasta raiz irá fazer essa gestão.
+o arquivo doc.config.json na pasta raiz e poderá ser utilizado para configurar algo globalmente ou alterar o comportamento do gerador.
+
+o arquivo deverá ser exposto numa pasta chamada saidas, e com padrão de nomenclatura por versão. Iniciando em v1 e incrementando o número.
+
+padrão ABNT:
+Elementos Apresentação gráfica
+Papel
+Branco, em formato A4 (21 cm x 29,7 cm)
+Os textos devem ser digitados na cor preta, podendo-se utilizar
+outras cores somente para as ilustrações (não são considerados o
+título, a fonte e legenda da ilustração, que devem ser na cor preta).
+Os elementos pré-textuais, textuais e pós-textuais devem iniciar
+sempre em nova página. As seções (secundária, terciária, etc.)
+devem ser digitadas na mesma página, seguindo a sequência do
+texto.
+Margens
+Esquerda e superior: 3,0 cm
+Direita e inferior: 2,0 cm
+Fonte
+Arial ou Times New Roman
+Tamanho 12 para todo o trabalho
+Tamanho menor e uniforme: citações com mais de três linhas,
+paginação, notas de rodapé, dados internacionais de catalogação
+na publicação, legendas e fontes das ilustrações e tabelas.
+
+- você pode pesquisar externamente outras normas do padrão abnt
+
+nesse primeiro momento, vamos só pegar o conteúdo do arquivo ./estrutura/capa que é um json com esse formato:
+
+{
+    "universidade": "",
+    "nomeAluno": "",
+    "tituloTCC": "",
+    "subtituloTCC": "",
+    "local": "",
+    "ano": 2025
+}
+
+faça a primeira versão do código, que vai ler o arquivo da capa, e expor a primeira versão docx com a capa formatada.
