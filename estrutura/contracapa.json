@@ -1,12 +1,12 @@
 {
-    "universidade": "",
-    "nomeAluno": "",
-    "tituloTCC": "",
-    "subtituloTCC": "",
+    "universidade": "Universidade de Brasília",
+    "nomeAluno": "André Araujo",
+    "tituloTCC": "Título do TCC",
+    "subtituloTCC": "Subtítulo do TCC",
 
-    "natureza": "",
-    "nomeOrientador": "",
+    "natureza": "Pesquisa",
+    "nomeOrientador": "Prof. Dr. Fulano de Tal",
 
-    "local": "",
+    "local": "Brasília",
     "ano": 2025
 }
