@@ -9,6 +9,8 @@ import { criarAbstractABNT } from './builders/abstract.js';
 import { criarListaIlustracoesABNT } from './builders/listaIlustracoes.js';
 import { criarListaSiglasAbreviaturasABNT } from './builders/siglas.js';
 import { gerarSecoesConteudo } from './builders/conteudo.js';
+import { criarSumarioABNT } from './builders/sumario.js';
+import { TableOfContents } from 'docx'; // (se ainda não estava importado indiretamente)
 
 // Caminho do arquivo de capa e contracapa
 const capaPath = path.join('estrutura', 'capa.json');
@@ -151,6 +153,15 @@ if (siglasParas.length) {
     });
 }
 
+// Inserir SUMÁRIO (antes da seção de conteúdo principal, depois das listas)
+const sumarioParas = criarSumarioABNT();
+sections.push({
+    ...commonSectionProps,
+    children: sumarioParas,
+    footers: { default: new Footer({ children: [] }) },
+    // sem header/numeração aqui
+});
+
 // >>> ADICIONE A PARTIR DAQUI <<<
 // Geração das seções de conteúdo (Introdução em diante)
 const { secoes: secoesConteudo } = gerarSecoesConteudo(path.join('estrutura', 'conteudo'));
@@ -191,62 +202,6 @@ const doc = new Document({
         default: {
             document: { run: { font: 'Times New Roman', size: 24, color: '000000' } },
         },
-        paragraphStyles: [
-            {
-                id: 'Heading1',
-                name: 'Heading 1',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 200, after: 0 } },
-            },
-            {
-                id: 'Heading2',
-                name: 'Heading 2',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 150, after: 0 } },
-            },
-            {
-                id: 'Heading3',
-                name: 'Heading 3',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 120, after: 0 } },
-            },
-            {
-                id: 'Heading4',
-                name: 'Heading 4',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 100, after: 0 } },
-            },
-            {
-                id: 'Heading5',
-                name: 'Heading 5',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 100, after: 0 } },
-            },
-            {
-                id: 'Heading6',
-                name: 'Heading 6',
-                basedOn: 'Normal',
-                next: 'Normal',
-                quickFormat: true,
-                run: { bold: true, size: 24 },
-                paragraph: { spacing: { before: 100, after: 0 } },
-            },
-        ],
     },
 });
 
