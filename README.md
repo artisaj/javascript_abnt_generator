@@ -133,9 +133,3 @@ import { gerarSecoesConteudo } from './builders/conteudo.js';
 import { criarSumarioABNT } from './builders/sumario.js';
 // Monta sections e gera Document(...)
 ```
-
-## Licença
-Definir (ex.: MIT).
-
-## Contribuição
-Abrir issue ou PR
